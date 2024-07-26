@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logging Hours for SU</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script>
+        function setup() {
+            noCanvas(); 
+        }
+
+        function addLog() {
+            let nameInput = select('#name').value();
+            let hoursInput = select('#hours').value();
+            let dateInput = select('#date').value();
+
+            if (nameInput !== '' && hoursInput !== '' && dateInput !== '') {
+                let table = select('#logTable tbody');
+                let newRow = createElement('tr');
+
+                let nameCell = createElement('td', nameInput);
+                let hoursCell = createElement('td', hoursInput);
+                let dateCell = createElement('td', dateInput);
+
+                nameCell.parent(newRow);
+                hoursCell.parent(newRow);
+                dateCell.parent(newRow);
+                newRow.parent(table);
+
+                select('#name').value('');
+                select('#hours').value('');
+                select('#date').value('');
+            } else {
+                alert('Please enter name, hours worked, and date.');
+            }
+        }
+        function saveLog(log) {
+            let logs = JSON.parse(localStorage.getItem('logs')) || [];
+            logs.push(log);
+            localStorage.setItem('logs', JSON.stringify(logs));
+        }
+
+        function loadLogs() {
+            let logs = JSON.parse(localStorage.getItem('logs')) || [];
+            let table = select('#logTable tbody');
+            logs.forEach(log => {
+                let newRow = createElement('tr');
+
+                let nameCell = createElement('td', log.name);
+                let hoursCell = createElement('td', log.hours);
+                let dateCell = createElement('td', log.date);
+
+                nameCell.parent(newRow);
+                hoursCell.parent(newRow);
+                dateCell.parent(newRow);
+                newRow.parent(table);
+            });
+        }
+
+//timesheet draft but idk properly how storage works, 
+//but like if we add aaryans calender system to this it should be cool.
+    </script>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #inputSection {
+            text-align: center;
+        }
+        table {
+            width: 50%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="inputSection">
+        <h1>Log Your Hours</h1>
+        <input type="text" id="name" placeholder="Name">
+        <input type="number" id="hours" placeholder="Hours Worked">
+        <input type="datetime-local" id="date" placeholder="Date">
+        <button onclick="addLog()">Add Log</button>
+        <table id="logTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Hours Worked</th>
+                    <th>Time of Log</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
